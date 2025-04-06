@@ -3,7 +3,14 @@
 A desktop application for automated WhatsApp marketing campaigns with AI-powered message generation and anti-ban measures.
 OPENROUTER API KEY REQUIRED FOR AI CAMPAIGNS
 
-![WhatsApp Marketing Tool](https://your-screenshot-url.png)
+![WhatsApp Marketing Tool](https://i.ibb.co/RpbWLv8V/image.png)
+
+<a href="https://ibb.co/ynPJLf2b"><img src="https://i.ibb.co/RpbWLv8V/image.png" alt="image" border="0"></a>
+<a href="https://ibb.co/4RnBsj3h"><img src="https://i.ibb.co/9HkRwqSQ/image.png" alt="image" border="0"></a>
+<a href="https://ibb.co/Ng9n201S"><img src="https://i.ibb.co/Kc2zxtNw/image.png" alt="image" border="0"></a>
+<a href="https://ibb.co/m56jMhyX"><img src="https://i.ibb.co/tp8GWY2x/image.png" alt="image" border="0"></a>
+<a href="https://ibb.co/NgtbWVTT"><img src="https://i.ibb.co/ymd7gf44/image.png" alt="image" border="0"></a>
+<a href="https://ibb.co/39w7B9QK"><img src="https://i.ibb.co/q3zdk3V6/image.png" alt="image" border="0"></a>
 
 ## Features
 
