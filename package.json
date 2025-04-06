@@ -1,0 +1,72 @@
+{
+  "name": "whatsapp-marketing",
+  "version": "1.0.0",
+  "description": "WhatsApp Marketing Tool",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "build-win": "electron-builder --win"
+  },
+  "dependencies": {
+    "axios": "^1.8.4",
+    "chrome-finder": "^1.0.7",
+    "electron-store": "^8.2.0",
+    "puppeteer-core": "^24.4.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "qrcode": "^1.5.4",
+    "qrcode-terminal": "^0.12.0",
+    "whatsapp-web.js": "^1.26.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "electron": "^29.4.6",
+    "electron-builder": "^24.9.1"
+  },
+  "build": {
+    "appId": "com.yourdomain.whatsappmarketing",
+    "productName": "WhatsApp Marketing Tool",
+    "files": [
+      "**/*",
+      "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
+      "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
+      "!**/node_modules/*.d.ts",
+      "!**/node_modules/.bin",
+      "!**/.git",
+      "!**/{.DS_Store,.git,.gitignore,.travis.yml,.npmignore}"
+    ],
+	
+	"extraMetadata": {
+    "devMode": false
+  },
+	
+    "directories": {
+      "buildResources": "resources"
+    },
+	
+	"asarUnpack": [
+    "node_modules/puppeteer-extra",
+    "node_modules/puppeteer-extra-plugin-stealth",
+    "node_modules/puppeteer-core",
+    ".wwebjs_auth/**/*"
+  ],
+  "extraResources": [
+    {
+      "from": ".wwebjs_auth",
+      "to": ".wwebjs_auth",
+      "filter": ["**/*"]
+    }
+  ],
+  "win": {
+    "target": "portable",
+    "icon": "assets/icon.ico"
+  },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}

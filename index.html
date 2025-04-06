@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> AI WhatsApp Marketing Tool</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+<!-- Add this License Overlay to the beginning of the body -->
+<div class="license-overlay" id="licenseOverlay">
+  <div class="license-container">
+    <div class="license-header">
+      <h2><i class="fas fa-key"></i> Activate AI WhatsApp Marketing Tool</h2>
+    </div>
+    <div class="license-body">
+      <p class="license-message">This tool requires activation to access all features. Please enter your license key below.</p>
+      
+      <div class="form-group">
+        <label for="licenseKey">
+          <i class="fas fa-lock"></i> License Key:
+        </label>
+        <input type="text" id="licenseKey" class="form-control" placeholder="Enter your OpenRouter API key...">
+      </div>
+      
+      <div class="license-buttons">
+        <button id="activateLicenseBtn" class="btn primary-btn">
+          <i class="fas fa-check-circle"></i> Activate License
+        </button>
+        <button id="demoModeBtn" class="btn secondary-btn">
+          <i class="fas fa-eye"></i> Try Demo Mode (10 messages limit)
+        </button>
+      </div>
+      
+      <div class="purchase-info">
+        <p>Don't have a license key? Contact us to purchase:</p>
+        <p><i class="fas fa-envelope"></i> Email: inameibsales@gmail.com</p>
+        <p><i class="fas fa-phone"></i> <a href="https://wa.me/923054567773">Phone: +923054567773</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+  <div class="app-container">
+    <header>
+      <h1><i class="fab fa-whatsapp"></i> AI WhatsApp Marketing Tool</h1>
+      <div class="license-info">License: Premium</div>
+    </header>
+    
+    <div class="status-bar">
+      <div class="status disconnected" id="connectionStatus">
+        <i class="fas fa-plug"></i> Disconnected
+      </div>
+      
+      <div class="campaign-status" id="campaignStatus">
+        <i class="fas fa-bullhorn"></i> Campaign is not running
+      </div>
+    </div>
+    
+    <div class="tabs">
+      <div class="tab active" data-tab="connection">
+        <i class="fas fa-link"></i> Connection
+      </div>
+      <div class="tab" data-tab="contacts">
+        <i class="fas fa-address-book"></i> Contacts
+      </div>
+      <div class="tab" data-tab="messaging">
+        <i class="fas fa-comment"></i> Messaging
+      </div>
+      <div class="tab" data-tab="campaign">
+        <i class="fas fa-bullhorn"></i> Campaign
+      </div>
+      <div class="tab" data-tab="settings">
+        <i class="fas fa-cog"></i> Settings
+      </div>
+    </div>
+    
+    <div class="tab-content active" id="connection-tab">
+      <div class="card">
+        <h2><i class="fas fa-link"></i> Connect WhatsApp</h2>
+        <p>Connect to WhatsApp and scan the QR code with your phone to start sending messages.</p>
+        <button id="connectBtn" class="btn primary-btn">
+          <i class="fas fa-qrcode"></i> Connect WhatsApp
+        </button>
+        
+        <div class="qr-container" id="qrContainer">
+          <h3>Scan this QR code with WhatsApp on your phone</h3>
+          <div class="qr-wrapper">
+            <canvas id="qrCanvas"></canvas>
+          </div>
+          <p class="help-text">
+            <i class="fas fa-info-circle"></i> Open WhatsApp on your phone &gt; Menu &gt; WhatsApp Web &gt; Scan QR code
+          </p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="tab-content" id="contacts-tab">
+      <div class="card">
+        <h2><i class="fas fa-address-book"></i> Contacts</h2>
+        <div class="button-group">
+          <button id="importBtn" class="btn primary-btn">
+            <i class="fas fa-file-import"></i> Import from Excel
+          </button>
+          <button id="clearContactsBtn" class="btn danger-btn">
+            <i class="fas fa-trash-alt"></i> Clear All Contacts
+          </button>
+        </div>
+        
+        <div class="stats-container">
+          <div class="stat-box">
+            <div class="stat-icon"><i class="fas fa-users"></i></div>
+            <div class="stat-value" id="totalContacts">0</div>
+            <div class="stat-label">Total</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-icon"><i class="fas fa-clock"></i></div>
+            <div class="stat-value" id="pendingContacts">0</div>
+            <div class="stat-label">Pending</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-icon"><i class="fas fa-check"></i></div>
+            <div class="stat-value" id="sentContacts">0</div>
+            <div class="stat-label">Sent</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-icon"><i class="fas fa-times"></i></div>
+            <div class="stat-value" id="failedContacts">0</div>
+            <div class="stat-label">Failed</div>
+          </div>
+        </div>
+        
+        <div class="contacts-table-container">
+          <table id="contactsTable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Contacts will be populated here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <div class="tab-content" id="messaging-tab">
+      <div class="card">
+        <h2><i class="fas fa-comment"></i> Send Message</h2>
+        
+        <div class="form-group">
+          <label for="contactSelect">
+            <i class="fas fa-user"></i> Select Contact:
+          </label>
+          <select id="contactSelect" class="form-control">
+            <option value="">-- Select a contact --</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="messageInput">
+            <i class="fas fa-envelope"></i> Message:
+          </label>
+          <textarea id="messageInput" class="form-control" rows="4" 
+            placeholder="Type your message here... Use {name} to insert contact name"></textarea>
+        </div>
+        
+        <!-- Attachment Section -->
+        <div class="form-group">
+          <label>
+            <i class="fas fa-paperclip"></i> Attachment:
+          </label>
+          <div class="file-input-container">
+            <input type="file" id="attachmentInput" class="file-input">
+            <label for="attachmentInput" class="file-input-label">
+              <i class="fas fa-file-upload"></i> Choose File
+            </label>
+            <span id="attachmentName" class="file-name"></span>
+            <span id="clearAttachment" class="clear-file" style="display: none;">
+              <i class="fas fa-times-circle"></i>
+            </span>
+          </div>
+        </div>
+        
+        <button id="sendBtn" class="btn primary-btn" disabled>
+          <i class="fas fa-paper-plane"></i> Send Message
+        </button>
+      </div>
+      
+      <div class="card">
+        <h2><i class="fas fa-history"></i> Message Log</h2>
+        <div class="message-log" id="messageLog">
+          <div class="log-entry">
+            <span class="log-time">[System]</span> Ready to connect
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="tab-content" id="campaign-tab">
+      <div class="card">
+        <h2><i class="fas fa-bullhorn"></i> Automated Campaign</h2>
+        
+        <div class="form-group">
+          <label for="campaignMessage">
+            <i class="fas fa-envelope"></i> Campaign Message:
+          </label>
+          <textarea id="campaignMessage" class="form-control" rows="4" 
+            placeholder="Enter message to send to all contacts. Use {name} to personalize with contact name."></textarea>
+        </div>
+        
+        <!-- AI Message Generator -->
+        <div class="form-group">
+          <div class="checkbox-group">
+            <input type="checkbox" id="useAI">
+            <label for="useAI">
+              <i class="fas fa-robot"></i> Use AI Message Generator
+            </label>
+          </div>
+        </div>
+        
+        <div class="ai-prompt-container" id="aiPromptContainer">
+          <div class="form-group">
+            <label for="aiModelSelect">
+              <i class="fas fa-brain"></i> AI Model:
+            </label>
+            <select id="aiModelSelect" class="form-control">
+              <!-- AI models will be loaded dynamically -->
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="aiPrompt">
+              <i class="fas fa-pencil-alt"></i> Describe Your Marketing Message:
+            </label>
+            <textarea id="aiPrompt" class="form-control" rows="4" 
+              placeholder="Describe your business and what kind of marketing message you want to send. Example: I run a fitness studio offering personalized training sessions. We're launching a summer discount for new clients. Generate a friendly and engaging WhatsApp message to attract new customers."></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label for="contactsPerVariation">
+              <i class="fas fa-users"></i> Contacts Per Variation:
+            </label>
+            <input type="number" id="contactsPerVariation" class="form-control" min="1" max="50" value="10">
+            <small>AI will generate a new message after this many contacts</small>
+          </div>
+          
+          <button id="generateAIBtn" class="btn secondary-btn">
+            <i class="fas fa-magic"></i> Generate Preview
+          </button>
+          
+          <div class="ai-generated-messages" id="aiGeneratedMessages">
+            <!-- AI-generated messages will appear here -->
+          </div>
+        </div>
+        
+        <!-- Attachment Section for Campaign -->
+        <div class="form-group">
+          <label>
+            <i class="fas fa-paperclip"></i> Campaign Attachment:
+          </label>
+          <div class="file-input-container">
+            <input type="file" id="campaignAttachmentInput" class="file-input">
+            <label for="campaignAttachmentInput" class="file-input-label">
+              <i class="fas fa-file-upload"></i> Choose File
+            </label>
+            <span id="campaignAttachmentName" class="file-name"></span>
+            <span id="clearCampaignAttachment" class="clear-file" style="display: none;">
+              <i class="fas fa-times-circle"></i>
+            </span>
+          </div>
+        </div>
+        
+        <div class="campaign-controls">
+          <button id="startCampaignBtn" class="btn primary-btn" disabled>
+            <i class="fas fa-play"></i> Start Campaign
+          </button>
+          <button id="pauseCampaignBtn" class="btn warning-btn" disabled>
+            <i class="fas fa-pause"></i> Pause
+          </button>
+          <button id="resumeCampaignBtn" class="btn info-btn" disabled>
+            <i class="fas fa-redo"></i> Resume
+          </button>
+          <button id="stopCampaignBtn" class="btn danger-btn" disabled>
+            <i class="fas fa-stop"></i> Stop
+          </button>
+        </div>
+      </div>
+      
+      <div class="card">
+        <h2><i class="fas fa-shield-alt"></i> Campaign Settings (Anti-Ban)</h2>
+        
+        <div class="settings-title">
+          <i class="fas fa-clock"></i> Message Timing
+        </div>
+        <div class="row">
+          <div class="col">
+            <label for="batchSize">Batch Size:</label>
+            <input type="number" id="batchSize" class="form-control" min="1" max="10" value="5">
+            <small>Number of messages before taking a longer break</small>
+          </div>
+          <div class="col">
+            <label for="messagesPerDay">Daily Limit:</label>
+            <input type="number" id="messagesPerDay" class="form-control" min="1" max="100" value="30">
+            <small>Maximum messages per day</small>
+          </div>
+        </div>
+        
+        <div class="settings-title">
+          <i class="fas fa-hourglass-half"></i> Delay Settings
+        </div>
+        <div class="row">
+          <div class="col">
+            <label for="minMessageDelay">Min Delay Between Messages (seconds):</label>
+            <input type="number" id="minMessageDelay" class="form-control" min="10" max="120" value="20">
+          </div>
+          <div class="col">
+            <label for="maxMessageDelay">Max Delay Between Messages (seconds):</label>
+            <input type="number" id="maxMessageDelay" class="form-control" min="10" max="180" value="45">
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col">
+            <label for="minBatchDelay">Min Delay Between Batches (minutes):</label>
+            <input type="number" id="minBatchDelay" class="form-control" min="1" max="30" value="5">
+          </div>
+          <div class="col">
+            <label for="maxBatchDelay">Max Delay Between Batches (minutes):</label>
+            <input type="number" id="maxBatchDelay" class="form-control" min="1" max="60" value="15">
+          </div>
+        </div>
+        
+        <div class="settings-title">
+          <i class="fas fa-user-secret"></i> Human-Like Features
+        </div>
+        <div class="form-group">
+          <div class="checkbox-group">
+            <input type="checkbox" id="randomizeOrder" checked>
+            <label for="randomizeOrder">Randomize Contact Order</label>
+          </div>
+          <div class="checkbox-group">
+            <input type="checkbox" id="useTypingIndicator" checked>
+            <label for="useTypingIndicator">Use Typing Indicators</label>
+          </div>
+          <div class="checkbox-group">
+            <input type="checkbox" id="useVariations" checked>
+            <label for="useVariations">Add Message Variations</label>
+          </div>
+          <div class="checkbox-group">
+            <input type="checkbox" id="addRandomEmoji" checked>
+            <label for="addRandomEmoji">Add Random Emojis</label>
+          </div>
+        </div>
+        
+        <button id="saveSettingsBtn" class="btn primary-btn">
+          <i class="fas fa-save"></i> Save Settings
+        </button>
+      </div>
+    </div>
+    
+    <div class="tab-content" id="settings-tab">
+	
+	<!-- Add this to the settings tab content -->
+<div class="card" id="licenseSettingsCard">
+  <h2><i class="fas fa-key"></i> License Information</h2>
+  
+  <div id="licenseStatusDisplay" class="license-status-display">
+    <div class="license-status-active">
+      <i class="fas fa-check-circle"></i> License Active
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label for="licenseKeySettings">
+      <i class="fas fa-lock"></i> License Key:
+    </label>
+    <div class="license-key-display">
+      <input type="password" id="licenseKeySettings" class="form-control" readonly>
+      <button id="showHideLicenseBtn" class="btn btn-sm secondary-btn">
+        <i class="fas fa-eye"></i>
+      </button>
+    </div>
+  </div>
+  
+  <div class="license-actions">
+    <button id="deactivateLicenseBtn" class="btn danger-btn">
+      <i class="fas fa-power-off"></i> Deactivate License
+    </button>
+    <button id="updateLicenseBtn" class="btn primary-btn">
+      <i class="fas fa-sync"></i> Update License
+    </button>
+  </div>
+</div>
+	
+	
+	
+	
+      <div class="card">
+        <h2><i class="fas fa-cog"></i> Settings</h2>
+        
+        <div class="settings-title">
+          <i class="fas fa-robot"></i> AI Custom Models
+        </div>
+        <p class="info-text">
+          <i class="fas fa-info-circle"></i> Add custom OpenRouter models if needed (most users won't need this)
+        </p>
+        
+        <div class="form-group">
+          <label for="customModelId">Model ID:</label>
+          <input type="text" id="customModelId" class="form-control" 
+            placeholder="Example: anthropic/claude-3-opus-20240229">
+          
+          <label for="customModelName">Model Name:</label>
+          <input type="text" id="customModelName" class="form-control" 
+            placeholder="Example: Anthropic: Claude 3 Opus">
+            
+          <button id="addCustomModelBtn" class="btn secondary-btn">
+            <i class="fas fa-plus-circle"></i> Add Custom Model
+          </button>
+        </div>
+      </div>
+      
+      <div class="card">
+        <h2><i class="fas fa-info-circle"></i> About</h2>
+        <div class="about-info">
+          <p><strong> AI WhatsApp Marketing Tool</strong> - Premium Edition</p>
+          <p>Version: 2.0.0</p>
+          <p>&copy; 2024 INAMULLAH <a href="https://fb.com/inamhoney">Visit my Profile</a></p>
+          <p class="license-text">Licensed to: Premium User</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Require modules
+    const { ipcRenderer } = require('electron');
+    const QRCode = require('qrcode');
+    const path = require('path');
+    
+    // Global state
+    let isConnected = false;
+    let campaignStatus = 'stopped';
+    let contacts = [];
+    let attachment = null;
+    let campaignAttachment = null;
+    let aiModels = [];
+    
+    // DOM elements
+    const tabs = document.querySelectorAll('.tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const connectionStatus = document.getElementById('connectionStatus');
+    const campaignStatusEl = document.getElementById('campaignStatus');
+    const connectBtn = document.getElementById('connectBtn');
+    const qrContainer = document.getElementById('qrContainer');
+    const qrCanvas = document.getElementById('qrCanvas');
+    const importBtn = document.getElementById('importBtn');
+    const clearContactsBtn = document.getElementById('clearContactsBtn');
+    const contactsTable = document.getElementById('contactsTable');
+    const contactSelect = document.getElementById('contactSelect');
+    const messageInput = document.getElementById('messageInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const messageLog = document.getElementById('messageLog');
+    const totalContacts = document.getElementById('totalContacts');
+    const pendingContacts = document.getElementById('pendingContacts');
+    const sentContacts = document.getElementById('sentContacts');
+    const failedContacts = document.getElementById('failedContacts');
+    
+    // Attachment elements
+    const attachmentInput = document.getElementById('attachmentInput');
+    const attachmentName = document.getElementById('attachmentName');
+    const clearAttachment = document.getElementById('clearAttachment');
+    const campaignAttachmentInput = document.getElementById('campaignAttachmentInput');
+    const campaignAttachmentName = document.getElementById('campaignAttachmentName');
+    const clearCampaignAttachment = document.getElementById('clearCampaignAttachment');
+    
+    // Campaign elements
+    const campaignMessage = document.getElementById('campaignMessage');
+    const startCampaignBtn = document.getElementById('startCampaignBtn');
+    const pauseCampaignBtn = document.getElementById('pauseCampaignBtn');
+    const resumeCampaignBtn = document.getElementById('resumeCampaignBtn');
+    const stopCampaignBtn = document.getElementById('stopCampaignBtn');
+    
+    // AI elements
+    const useAI = document.getElementById('useAI');
+    const aiPromptContainer = document.getElementById('aiPromptContainer');
+    const aiModelSelect = document.getElementById('aiModelSelect');
+    const aiPrompt = document.getElementById('aiPrompt');
+    const contactsPerVariation = document.getElementById('contactsPerVariation');
+    const generateAIBtn = document.getElementById('generateAIBtn');
+    const aiGeneratedMessages = document.getElementById('aiGeneratedMessages');
+    
+    // Custom model elements
+    const customModelId = document.getElementById('customModelId');
+    const customModelName = document.getElementById('customModelName');
+    const addCustomModelBtn = document.getElementById('addCustomModelBtn');
+    
+    // Settings elements
+    const batchSize = document.getElementById('batchSize');
+    const messagesPerDay = document.getElementById('messagesPerDay');
+    const minMessageDelay = document.getElementById('minMessageDelay');
+    const maxMessageDelay = document.getElementById('maxMessageDelay');
+    const minBatchDelay = document.getElementById('minBatchDelay');
+    const maxBatchDelay = document.getElementById('maxBatchDelay');
+    const randomizeOrder = document.getElementById('randomizeOrder');
+    const useTypingIndicator = document.getElementById('useTypingIndicator');
+    const useVariations = document.getElementById('useVariations');
+    const addRandomEmoji = document.getElementById('addRandomEmoji');
+    const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+    
+    // Initialize
+    document.addEventListener('DOMContentLoaded', init);
+    
+    function init() {
+	
+	async function checkLicenseStatus() {
+  try {
+    const status = await ipcRenderer.invoke('get-license-status');
+    updateLicenseState(status.isValid);
+  } catch (error) {
+    logMessage(`Error checking license status: ${error.message}`, 'error');
+  }
+}
+
+      setupTabs();
+      setupEventListeners();
+	  setupLicenseEventListeners(); // Add this line
+      loadContacts();
+	  loadAIModels();
+	  checkLicenseStatus(); // Add this line
+    }
+    
+    // Set up tab navigation
+    function setupTabs() {
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          
+          const tabId = tab.dataset.tab;
+          tabContents.forEach(content => content.classList.remove('active'));
+          document.getElementById(`${tabId}-tab`).classList.add('active');
+        });
+      });
+    }
+    
+    // Set up event listeners
+    function setupEventListeners() {
+      // Connection
+      connectBtn.addEventListener('click', handleConnectWhatsApp);
+      
+      // Contacts
+      importBtn.addEventListener('click', handleImportContacts);
+      clearContactsBtn.addEventListener('click', handleClearContacts);
+      
+      // Messaging
+      sendBtn.addEventListener('click', handleSendMessage);
+      contactSelect.addEventListener('change', handleContactSelectChange);
+      
+      // Attachments
+      attachmentInput.addEventListener('change', handleAttachmentChange);
+      clearAttachment.addEventListener('click', handleClearAttachment);
+      campaignAttachmentInput.addEventListener('change', handleCampaignAttachmentChange);
+      clearCampaignAttachment.addEventListener('click', handleClearCampaignAttachment);
+      
+      // Campaign
+      startCampaignBtn.addEventListener('click', handleStartCampaign);
+      pauseCampaignBtn.addEventListener('click', handlePauseCampaign);
+      resumeCampaignBtn.addEventListener('click', handleResumeCampaign);
+      stopCampaignBtn.addEventListener('click', handleStopCampaign);
+      saveSettingsBtn.addEventListener('click', handleSaveSettings);
+      
+      // AI
+      useAI.addEventListener('change', handleUseAIToggle);
+      generateAIBtn.addEventListener('click', handleGenerateAI);
+      
+      // Custom Models
+      addCustomModelBtn.addEventListener('click', handleAddCustomModel);
+      
+      // IPC listeners
+      setupIPCListeners();
+    }
+    
+    // Set up IPC listeners
+    function setupIPCListeners() {
+      ipcRenderer.on('whatsapp-qr', (event, qrCode) => {
+        logMessage('QR code received. Please scan with your phone.', 'info');
+        updateStatus('connecting');
+        
+        // Display QR code
+        qrContainer.style.display = 'block';
+        QRCode.toCanvas(qrCanvas, qrCode, { width: 250 }, (error) => {
+          if (error) {
+            logMessage('Error generating QR code: ' + error, 'error');
+          }
+        });
+      });
+      
+      ipcRenderer.on('whatsapp-ready', () => {
+        logMessage('WhatsApp connected successfully!', 'success');
+        updateStatus('connected');
+        isConnected = true;
+        qrContainer.style.display = 'none';
+        updateUI();
+      });
+      
+      ipcRenderer.on('whatsapp-disconnected', (event, reason) => {
+        logMessage(`WhatsApp disconnected: ${reason}`, 'error');
+        updateStatus('disconnected');
+        isConnected = false;
+        updateUI();
+      });
+      
+      ipcRenderer.on('whatsapp-error', (event, message) => {
+        logMessage(`WhatsApp error: ${message}`, 'error');
+      });
+      
+      ipcRenderer.on('message-status', (event, data) => {
+        if (data.success) {
+          logMessage(`Message sent successfully to ${data.contact.name || data.contact.phone}`, 'success');
+          loadContacts(); // Refresh contacts to update status
+        } else {
+          logMessage(`Failed to send message: ${data.error}`, 'error');
+        }
+      });
+      
+      // Campaign event listeners
+      ipcRenderer.on('campaign-status', (event, status) => {
+        updateCampaignStatus(status);
+      });
+      
+      ipcRenderer.on('message-sent', (event, contact) => {
+        loadContacts(); // Refresh contacts to update status
+      });
+      
+      ipcRenderer.on('message-failed', (event, data) => {
+        loadContacts(); // Refresh contacts to update status
+      });
+      
+      ipcRenderer.on('campaign-complete', () => {
+        logMessage('Campaign completed!', 'success');
+        loadContacts(); // Refresh contacts
+      });
+      
+      ipcRenderer.on('campaign-log', (event, data) => {
+        logMessage(data.message, data.type);
+      });
+      
+      ipcRenderer.on('campaign-start-status', (event, data) => {
+        if (data.success) {
+          logMessage(data.message, 'success');
+        } else {
+          logMessage(data.message, 'error');
+        }
+      });
+    }
+    
+    // Load AI models
+    async function loadAIModels() {
+      try {
+        const response = await ipcRenderer.invoke('get-ai-models');
+        
+        if (response.success) {
+          aiModels = response.models;
+          updateAIModelSelect();
+        }
+      } catch (error) {
+        logMessage(`Error loading AI models: ${error.message}`, 'error');
+      }
+    }
+    
+    // Update AI model select dropdown
+    function updateAIModelSelect() {
+      aiModelSelect.innerHTML = '';
+      
+      aiModels.forEach(model => {
+        const option = document.createElement('option');
+        option.value = model.id;
+        option.textContent = model.name;
+        aiModelSelect.appendChild(option);
+      });
+    }
+    
+    // Handle adding custom model
+    async function handleAddCustomModel() {
+      const modelId = customModelId.value.trim();
+      const modelName = customModelName.value.trim();
+      
+      if (!modelId || !modelName) {
+        logMessage('Both Model ID and Model Name are required', 'error');
+        return;
+      }
+      
+      try {
+        const result = await ipcRenderer.invoke('add-custom-model', { modelId, modelName });
+        
+        if (result.success) {
+          logMessage(result.message, 'success');
+          loadAIModels();
+          customModelId.value = '';
+          customModelName.value = '';
+        } else {
+          logMessage(result.message, 'error');
+        }
+      } catch (error) {
+        logMessage(`Error adding custom model: ${error.message}`, 'error');
+      }
+    }
+    
+    // Handle connect WhatsApp button
+    function handleConnectWhatsApp() {
+      logMessage('Connecting to WhatsApp...', 'info');
+      updateStatus('connecting');
+      ipcRenderer.send('connect-whatsapp');
+    }
+    
+    // Handle import contacts button
+    async function handleImportContacts() {
+      try {
+        const result = await ipcRenderer.invoke('import-contacts');
+        
+        if (result.success) {
+          logMessage(result.message, 'success');
+          loadContacts();
+        } else {
+          logMessage(result.message, 'error');
+        }
+      } catch (error) {
+        logMessage(`Error importing contacts: ${error.message}`, 'error');
+      }
+    }
+    
+    // Handle clear contacts button
+    async function handleClearContacts() {
+      if (!confirm('Are you sure you want to clear all contacts?')) {
+        return;
+      }
+      
+      try {
+        const result = await ipcRenderer.invoke('clear-contacts');
+        
+        if (result.success) {
+          logMessage(result.message, 'success');
+          loadContacts();
+        } else {
+          logMessage(result.message, 'error');
+        }
+      } catch (error) {
+        logMessage(`Error clearing contacts: ${error.message}`, 'error');
+      }
+    }
+    
+    // Handle contact select change
+    function handleContactSelectChange() {
+      updateUI();
+    }
+    
+    // Handle attachment change
+    function handleAttachmentChange(e) {
+      const file = e.target.files[0];
+      if (file) {
+        attachment = {
+          filePath: file.path,
+          fileName: file.name
+        };
+        attachmentName.textContent = file.name;
+        clearAttachment.style.display = 'inline';
+      }
+    }
+    
+    // Handle clear attachment
+    function handleClearAttachment() {
+      attachment = null;
+      attachmentInput.value = '';
+      attachmentName.textContent = '';
+      clearAttachment.style.display = 'none';
+    }
+    
+    // Handle campaign attachment change
+    function handleCampaignAttachmentChange(e) {
+      const file = e.target.files[0];
+      if (file) {
+        campaignAttachment = {
+          filePath: file.path,
+          fileName: file.name
+        };
+        campaignAttachmentName.textContent = file.name;
+        clearCampaignAttachment.style.display = 'inline';
+      }
+    }
+    
+    // Handle clear campaign attachment
+    function handleClearCampaignAttachment() {
+      campaignAttachment = null;
+      campaignAttachmentInput.value = '';
+      campaignAttachmentName.textContent = '';
+      clearCampaignAttachment.style.display = 'none';
+    }
+    
+    // Handle send message button
+    function handleSendMessage() {
+      const selectedContactId = contactSelect.value;
+      const message = messageInput.value.trim();
+      
+      if (!selectedContactId || !message) {
+        logMessage('Please select a contact and enter a message', 'error');
+        return;
+      }
+      
+      const contact = contacts.find(c => c.phone === selectedContactId);
+      
+      if (!contact) {
+        logMessage('Selected contact not found', 'error');
+        return;
+      }
+      
+      logMessage(`Sending message to ${contact.name || contact.phone}...`, 'info');
+      ipcRenderer.send('send-message', { 
+        contact, 
+        message,
+        attachment  // Include attachment if present
+      });
+    }
+    
+    // Handle AI toggle
+    function handleUseAIToggle() {
+      if (useAI.checked) {
+        aiPromptContainer.style.display = 'block';
+        campaignMessage.disabled = true;
+      } else {
+        aiPromptContainer.style.display = 'none';
+        campaignMessage.disabled = false;
+      }
+    }
+    
+    // Handle generate AI preview
+    async function handleGenerateAI() {
+      const prompt = aiPrompt.value.trim();
+      
+      if (!prompt) {
+        logMessage('Please enter a description for your marketing message', 'error');
+        return;
+      }
+      
+      try {
+        logMessage('Generating AI message variations...', 'info');
+        
+        // Get selected model
+        const modelId = aiModelSelect.value;
+        
+        const result = await ipcRenderer.invoke('generate-ai-messages', {
+          prompt,
+          modelId,
+          count: 3
+        });
+        
+        if (result.success) {
+          displayAIMessages(result.variations);
+          logMessage(result.message, 'success');
+        } else {
+          logMessage(result.message, 'error');
+        }
+      } catch (error) {
+        logMessage(`Error generating AI messages: ${error.message}`, 'error');
+      }
+    }
+    
+    // Display AI message variations
+    function displayAIMessages(variations) {
+      aiGeneratedMessages.innerHTML = '';
+      
+      variations.forEach((message, index) => {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'ai-message';
+        
+        messageDiv.innerHTML = `
+          <div class="ai-message-header">Variation ${index + 1}</div>
+          <div class="ai-message-content">${message.replace(/\n/g, '<br>')}</div>
+          <div class="ai-message-actions">
+            <button class="btn btn-sm success-btn ai-select-button" data-index="${index}">
+              <i class="fas fa-check"></i> Use This
+            </button>
+          </div>
+        `;
+        
+        // Add click handler for the select button
+        const selectBtn = messageDiv.querySelector('.ai-select-button');
+        selectBtn.addEventListener('click', () => {
+          campaignMessage.value = message;
+          campaignMessage.disabled = false;
+          
+          // Switch to normal mode but keep the AI selection
+          useAI.checked = true;
+          
+          logMessage(`Selected AI variation ${index + 1} for campaign`, 'info');
+        });
+        
+        aiGeneratedMessages.appendChild(messageDiv);
+      });
+    }
+    
+    // Campaign actions
+    function handleStartCampaign() {
+      // Check if using AI or regular message
+      const useAIChecked = useAI.checked;
+      const message = campaignMessage.value.trim();
+      const aiPromptText = aiPrompt.value.trim();
+      
+      if (!useAIChecked && !message) {
+        logMessage('Please enter a campaign message', 'error');
+        return;
+      }
+      
+      if (useAIChecked && !aiPromptText) {
+        logMessage('Please enter a description for your AI marketing message', 'error');
+        return;
+      }
+      
+      if (!confirm('Are you sure you want to start an automated campaign?')) {
+        return;
+      }
+      
+      // Prepare AI config if using AI
+      let aiConfig = null;
+      if (useAIChecked) {
+        aiConfig = {
+          modelId: aiModelSelect.value,
+          prompt: aiPromptText,
+          contactsPerVariation: parseInt(contactsPerVariation.value) || 10
+        };
+      }
+      
+      ipcRenderer.send('start-campaign', {
+        messageTemplate: message,
+        useAI: useAIChecked,
+        aiConfig,
+        attachment: campaignAttachment
+      });
+    }
+    
+    function handlePauseCampaign() {
+      ipcRenderer.send('pause-campaign');
+    }
+    
+    function handleResumeCampaign() {
+      ipcRenderer.send('resume-campaign');
+    }
+    
+    function handleStopCampaign() {
+      if (!confirm('Are you sure you want to stop the campaign?')) {
+        return;
+      }
+      
+      ipcRenderer.send('stop-campaign');
+    }
+    
+    // Handle save settings
+    async function handleSaveSettings() {
+      try {
+        const settings = {
+          batchSize: parseInt(batchSize.value) || 5,
+          messagesPerDay: parseInt(messagesPerDay.value) || 30,
+          messageDelay: {
+            min: parseInt(minMessageDelay.value) || 20,
+            max: parseInt(maxMessageDelay.value) || 45
+          },
+          batchDelay: {
+            min: parseInt(minBatchDelay.value) || 5,
+            max: parseInt(maxBatchDelay.value) || 15
+          },
+          randomizeOrder: randomizeOrder.checked,
+          useTypingIndicator: useTypingIndicator.checked,
+          useVariations: useVariations.checked,
+          addRandomEmoji: addRandomEmoji.checked
+        };
+        
+        const result = await ipcRenderer.invoke('update-campaign-settings', settings);
+        
+        if (result.success) {
+          logMessage(result.message, 'success');
+        } else {
+          logMessage(result.message, 'error');
+        }
+      } catch (error) {
+        logMessage(`Error saving settings: ${error.message}`, 'error');
+      }
+    }
+    
+    // Load contacts from main process
+    async function loadContacts() {
+      try {
+        contacts = await ipcRenderer.invoke('get-contacts');
+        const stats = await ipcRenderer.invoke('get-contact-stats');
+        
+        // Update stats
+        totalContacts.textContent = stats.total;
+        pendingContacts.textContent = stats.pending;
+        sentContacts.textContent = stats.sent;
+        failedContacts.textContent = stats.failed;
+        
+        // Update contacts table
+        updateContactsTable();
+        
+        // Update contact select dropdown
+        updateContactSelect();
+        
+        // Update UI based on contacts
+        updateUI();
+      } catch (error) {
+        logMessage(`Error loading contacts: ${error.message}`, 'error');
+      }
+    }
+    
+    // Update contacts table
+    function updateContactsTable() {
+      const tbody = contactsTable.querySelector('tbody');
+      tbody.innerHTML = '';
+      
+      if (contacts.length === 0) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = '<td colspan="5" style="text-align: center;">No contacts found</td>';
+        tbody.appendChild(tr);
+        return;
+      }
+      
+      contacts.forEach((contact, index) => {
+        const tr = document.createElement('tr');
+        
+        const statusClass = contact.status === 'Sent' ? 'sent' : 
+                          contact.status === 'Failed' ? 'failed' : 'pending';
+        
+        tr.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${contact.name || '(No name)'}</td>
+          <td>${contact.phone}</td>
+          <td><span class="contact-status ${statusClass}">${contact.status || 'Pending'}</span></td>
+          <td>
+            <div class="contact-actions">
+              <button class="btn btn-sm primary-btn send-button" data-index="${index}">
+                <i class="fas fa-paper-plane"></i>
+              </button>
+              <button class="btn btn-sm danger-btn delete-button" data-index="${index}">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        `;
+        
+        // Add event listeners
+        const sendButton = tr.querySelector('.send-button');
+        const deleteButton = tr.querySelector('.delete-button');
+        
+        sendButton.addEventListener('click', () => {
+          contactSelect.value = contact.phone;
+          tabs.forEach(t => t.classList.remove('active'));
+          tabs[2].classList.add('active'); // Messaging tab
+          tabContents.forEach(content => content.classList.remove('active'));
+          document.getElementById('messaging-tab').classList.add('active');
+          updateUI();
+        });
+        
+        deleteButton.addEventListener('click', async () => {
+          if (confirm(`Are you sure you want to delete contact: ${contact.name || contact.phone}?`)) {
+            try {
+              const result = await ipcRenderer.invoke('remove-contact', index);
+              
+              if (result.success) {
+                logMessage(result.message, 'success');
+                loadContacts();
+              } else {
+                logMessage(result.message, 'error');
+              }
+            } catch (error) {
+              logMessage(`Error removing contact: ${error.message}`, 'error');
+            }
+          }
+        });
+        
+        tbody.appendChild(tr);
+      });
+    }
+    
+    // Update contact select dropdown
+    function updateContactSelect() {
+      contactSelect.innerHTML = '<option value="">-- Select a contact --</option>';
+      
+      contacts.forEach(contact => {
+        const option = document.createElement('option');
+        option.value = contact.phone;
+        option.textContent = `${contact.name || '(No name)'} - ${contact.phone}`;
+        contactSelect.appendChild(option);
+      });
+    }
+    
+    // Update campaign status
+    function updateCampaignStatus(status) {
+      campaignStatus = status;
+      
+      // Update status element
+      campaignStatusEl.className = `campaign-status ${status}`;
+      
+      switch (status) {
+        case 'running':
+          campaignStatusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Campaign is running...';
+          break;
+        case 'paused':
+          campaignStatusEl.innerHTML = '<i class="fas fa-pause"></i> Campaign is paused';
+          break;
+        case 'stopped':
+          campaignStatusEl.innerHTML = '<i class="fas fa-stop"></i> Campaign is stopped';
+          break;
+        case 'completed':
+          campaignStatusEl.innerHTML = '<i class="fas fa-check-circle"></i> Campaign completed successfully';
+          break;
+        default:
+          campaignStatusEl.innerHTML = '<i class="fas fa-info-circle"></i> Campaign status: ' + status;
+      }
+      
+      // Update campaign control buttons
+      updateCampaignControls();
+    }
+    
+    // Update campaign control buttons
+    function updateCampaignControls() {
+      startCampaignBtn.disabled = !isConnected || campaignStatus === 'running' || campaignStatus === 'paused';
+      pauseCampaignBtn.disabled = campaignStatus !== 'running';
+      resumeCampaignBtn.disabled = campaignStatus !== 'paused';
+      stopCampaignBtn.disabled = campaignStatus !== 'running' && campaignStatus !== 'paused';
+    }
+    
+    // Update UI based on state
+    function updateUI() {
+      // Disable/enable buttons based on connection status
+      sendBtn.disabled = !isConnected || !contactSelect.value;
+      startCampaignBtn.disabled = !isConnected || campaignStatus === 'running' || campaignStatus === 'paused';
+      
+      // Update campaign controls
+      updateCampaignControls();
+      
+      // AI section visibility
+      if (useAI.checked) {
+        aiPromptContainer.style.display = 'block';
+        campaignMessage.disabled = true;
+      } else {
+        aiPromptContainer.style.display = 'none';
+        campaignMessage.disabled = false;
+      }
+    }
+    
+    // Update connection status
+    function updateStatus(status) {
+      connectionStatus.className = 'status ' + status;
+      
+      if (status === 'connected') {
+        connectionStatus.innerHTML = '<i class="fas fa-plug"></i> Connected';
+      } else if (status === 'connecting') {
+        connectionStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting...';
+      } else {
+        connectionStatus.innerHTML = '<i class="fas fa-plug"></i> Disconnected';
+      }
+    }
+    
+    // Log message to UI
+    function logMessage(message, type = 'info') {
+      const logEntry = document.createElement('div');
+      logEntry.className = 'log-entry';
+      
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString();
+      
+      let className = '';
+      let icon = '';
+      
+      if (type === 'success') {
+        className = 'log-success';
+        icon = '<i class="fas fa-check-circle"></i>';
+      } else if (type === 'error') {
+        className = 'log-error';
+        icon = '<i class="fas fa-exclamation-circle"></i>';
+      } else {
+        className = 'log-info';
+        icon = '<i class="fas fa-info-circle"></i>';
+      }
+      
+      logEntry.innerHTML = `<span class="log-time">[${timeStr}]</span> <span class="${className}">${icon} ${message}</span>`;
+      
+      messageLog.appendChild(logEntry);
+      messageLog.scrollTop = messageLog.scrollHeight;
+    }
+  </script>
+  <script type="text/javascript" src="license.js"></script>
+</body>
+</html>
