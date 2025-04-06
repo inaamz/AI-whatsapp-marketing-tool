@@ -1,6 +1,7 @@
 # WhatsApp Marketing Tool
 
 A desktop application for automated WhatsApp marketing campaigns with AI-powered message generation and anti-ban measures.
+OPENROUTER API KEY REQUIRED FOR AI CAMPAIGNS
 
 ![WhatsApp Marketing Tool](https://your-screenshot-url.png)
 
@@ -30,6 +31,7 @@ A desktop application for automated WhatsApp marketing campaigns with AI-powered
 3. **Create Messages**: Type your message or use AI to generate variations
 4. **Configure Campaign**: Set up anti-ban measures and campaign settings
 5. **Launch Campaign**: Start the automated messaging campaign
+6. **OpenRouter**: Create free account on OpenRouter and get free API
 
 ## Project Structure
 
